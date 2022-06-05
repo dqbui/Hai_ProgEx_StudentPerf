@@ -54,20 +54,40 @@ def sort_subject_by_average(report_list):
     return [hardest_subject, easiest_subject]
 
 
-def sort_grade(report_list):
+def sort_grade(report_list):  # return [best_grade, worst_grade]
+    grade_dict = {}
     grade_set = set()
 
     for student in report_list:
         grade_set.add(student['grade'])
 
-    grade_dict = {str(grade): 0 for grade in grade_set}
-    print(grade_dict)
+    for grade in grade_set:
+        sum_holder = 0
+        count_holder = 0
+        for student in report_list:
+            if student['grade'] == grade:
+                sum_holder += get_student_average(student) * 5
+                count_holder += 1
 
-    # return [best_grade, worst_grade]
-    return [6, 5]
+        average_holder = sum_holder / count_holder
+        # print(f'Grade: {grade}')
+        # print(f'Count: {count_holder}')
+        # print(f'Average: {average_holder}')
+        grade_dict[str(grade)] = average_holder
+
+    # print(grade_dict)
+
+    best_grade = max(grade_dict, key=grade_dict.get)
+    worst_grade = min(grade_dict, key=grade_dict.get)
+
+    return [best_grade, worst_grade]
 
 
-def sort_student(report_list):
+def sort_student(report_list):  # return [best_student, worst_student]
+    student_dict = {
+        student_id: get_student_average(report_list[student_id]) for student_id in range(1000)}
 
-    # return [best_student, worst_student]
-    return [243, 420]
+    best_student = max(student_dict, key=student_dict.get)
+    worst_student = min(student_dict, key=student_dict.get)
+
+    return [best_student, worst_student]
